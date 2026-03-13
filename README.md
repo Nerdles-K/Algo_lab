@@ -6,7 +6,7 @@ Brief description of each solution:
 
 Ex1: Bidirectional story feed using doubly linked pointers for efficient forward and backward navigation.
 
-Ex2:
+Ex2: Integrated activity processing system combining a pointer-based stack for LIFO history and a queue for FIFO notifications.
 
 Ex3: Engagement-ranked queue using a sorted singly linked list for instant retrieval of trending content.
 
@@ -16,6 +16,8 @@ Ex1: time complexity : O(1) (nav)
 O(n^2) (reorder)
 space complexity: O(n)
 
-Ex3: time complexity : O(1) (enqueue)
-O(n^2) (peek)
+Ex2: time complexity : O(1) (push/pop/enqueue/dequeue) space complexity: O(n)
+
+Ex3: time complexity : O(n) (enqueue)
+O(1) (peek)
 space complexity: O(n)
