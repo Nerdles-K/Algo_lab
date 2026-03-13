@@ -19,5 +19,3 @@ space complexity: O(n)
 Ex2: time complexity : O(1) (push/pop/enqueue/dequeue) space complexity: O(n)
 
 Ex3: time complexity : O(n) (enqueue)
-O(1) (peek)
-space complexity: O(n)
