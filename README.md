@@ -1,6 +1,6 @@
 Team Members:Xu Ziyang, Yuen Kin Ning
 
-Assigned Exercises: Xu Ziyang: Ex 1,3 Yuen Kin Ning: Ex 2,3
+Assigned Exercises: Xu Ziyang: Ex 1 Yuen Kin Ning: Ex 2
 
 Brief description of each solution:
 
