@@ -13,7 +13,7 @@ All functions use Depth-First Search (DFS) to recursively traverse the nested tr
  All functions recursively split the array in half and combine results, running in O(n) or O(n log n) time with O(log n) stack space.
 
 **Ex3:** 
-
+ All functions demonstrate conversion from recursion to iteration. flatten_recursive uses DFS recursion, O(n) time, O(d) space. flatten _iterative uses an explicit stack with state machine, O(n) time, O(n) space in worst case. count_comments_tail simulates tail recursion with an accumulator and a linked list of pending nodes, O(n) time, O(n) space. count_comments_loop uses an explicit stack for DFS, O(n) time, O(n) space.
 
 
 **Complexity analysis summary:**
@@ -43,3 +43,10 @@ delete_comment 	O(n) 				O(d)
      find_peak_hour               O(log n)         O(log n)      
      
 **Ex3: 		Time complexity       Space complexity**
+flatten_recursive       O(n)        O(d)
+
+flatten_iterative       O(n)        O(n)
+
+count_comments_tail     O(n)        O(n)
+
+count_comments_lоор     O(n)        O(n)
