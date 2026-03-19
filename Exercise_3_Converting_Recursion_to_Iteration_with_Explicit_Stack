@@ -1,1 +1,51 @@
+class CommentNode:
+    def __init__(self, comment_id, user_id, content, timestamp, likes):
+        self.comment_id = comment_id
+        self.user_id = user_id
+        self.content = content[:100]
+        self.timestamp = timestamp
+        self.likes = likes
+        self.replies = []
 
+    def add_reply(self, reply_node):
+        self.replies.append(reply_node)
+
+def flatten_recursive(comment):
+    result = [comment]
+    for reply in comment.replies:
+        result.extend(flatten_recursive(reply))
+    return result
+
+STATE_START = 0
+STATE_REPLIES_DONE = 1
+
+def flatten_iterative(comment):
+    result = []
+    stack = [(comment, STATE_START)]
+    while stack:
+        node, state = stack.pop()
+        if state == STATE_START:
+            result.append(node)
+            stack.append((node, STATE_REPLIES_DONE))
+            for reply in reversed(node.replies):
+                stack.append((reply, STATE_START))
+        else:
+            pass
+    return result
+
+def count_comments_tail(comment, accumulator=0):
+    def helper(comments, acc):
+        if not comments:
+            return acc
+        pass
+    pass
+
+def count_comments_loop(comment):
+    count = 0
+    stack = [comment]
+    while stack:
+        node = stack.pop()
+        count += 1
+        for reply in node.replies:
+            stack.append(reply)
+    return count
