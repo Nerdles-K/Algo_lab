@@ -1,167 +1,219 @@
-class GeneralizedCategoryNode:
-    def __init__(self, category_id, name, post_count):
-        self.category_id = category_id 
-        self.name = name            
-        self.post_count = post_count   
-        self.children = []             
-        self.parent = None             
-
-# 2. 定义 【二叉树节点】（转换要用）
-class BinaryCategoryNode:
-    def __init__(self, category_id, name, post_count):
+class CategoryNode:
+    def __init__(self, category_id, name, post_count, parent=None):
         self.category_id = category_id
         self.name = name
         self.post_count = post_count
-        self.left = None   
-        self.right = None  
+        self.parent = parent
+        self.children = []  
 
-# ======================================================
-# Part A：二叉树 → 多叉树
-# ======================================================
-def binary_to_generalized(binary_node):
-    if not binary_node:
-        return None
+ --- 2. Tree Metric Calculations ---
 
-    gen_node = GeneralizedCategoryNode(
-        binary_node.category_id,
-        binary_node.name,
-        binary_node.post_count
-    )
-
-    child = binary_node.left
-    while child:
-        gen_child = binary_to_generalized(child)
-        gen_node.children.append(gen_child)
-        gen_child.parent = gen_node
-        child = child.right
-
-    return gen_node
-
-# ======================================================
-# Part B：多叉树 → 二叉树（左孩子右兄弟）
-# ======================================================
-def generalized_to_binary(gen_node):
-    if not gen_node:
-        return None
-
-    binary_node = BinaryCategoryNode(
-        gen_node.category_id,
-        gen_node.name,
-        gen_node.post_count
-    )
-
-    if not gen_node.children:
-        return binary_node
-
-    binary_node.left = generalized_to_binary(gen_node.children[0])
-    sibling = binary_node.left
-    for i in range(1, len(gen_node.children)):
-        sibling.right = generalized_to_binary(gen_node.children[i])
-        sibling = sibling.right
-
-    return binary_node
-
-# ======================================================
-# 多叉树遍历（前序、后序、层序）
-# ======================================================
-
-# 前序遍历：根 → 孩子们
-def pre_order_generalized(node):
-    if not node:
-        return []
-    res = [node.name]
-    for child in node.children:
-        res += pre_order_generalized(child)
-    return res
-
-# 后序遍历：孩子们 → 根
-def post_order_generalized(node):
-    if not node:
-        return []
-    res = []
-    for child in node.children:
-        res += post_order_generalized(child)
-    res.append(node.name)
-    return res
-
-# 层序遍历（一层一层）
-def level_order_generalized(node):
-    if not node:
-        return []
-    from collections import deque
-    q = deque([node])
-    res = []
-    while q:
-        cur = q.popleft()
-        res.append(cur.name)
-        for child in cur.children:
-            q.append(child)
-    return res
-
-# ======================================================
-# 多叉树 计算（高度、节点数、叶子数、扇出、分支因子）
-# ======================================================
-
-# 树高度
-def calculate_height_generalized(node):
-    if not node:
+def calculate_height(node):
+    if node is None:
         return -1
     if not node.children:
         return 0
-    max_h = -1
+    max_child_height = -1
     for child in node.children:
-        max_h = max(max_h, calculate_height_generalized(child))
-    return 1 + max_h
+        h = calculate_height(child)
+        if h > max_child_height:
+            max_child_height = h
+    return 1 + max_child_height
 
-# 总节点数
-def count_nodes_generalized(node):
-    if not node:
+def calculate_node_height(node, target_id):
+    target_node = find_category(target_id, node)
+    if target_node is None:
+        return -1
+    return calculate_height(target_node)
+
+def count_nodes(node):
+    if node is None:
         return 0
     count = 1
     for child in node.children:
-        count += count_nodes_generalized(child)
+        count += count_nodes(child)
     return count
 
-# 叶子数（没有孩子）
-def count_leaves_generalized(node):
-    if not node:
+def count_leaves(node):
+    if node is None:
         return 0
     if not node.children:
         return 1
     total = 0
     for child in node.children:
-        total += count_leaves_generalized(child)
+        total += count_leaves(child)
     return total
 
-# 最大扇出（一个节点最多有几个孩子）
-def calculate_fan_out(node):
-    if not node:
-        return 0
-    max_fan = len(node.children)
+def is_balanced(node):
+    if node is None:
+        return True
+    heights = []
     for child in node.children:
-        max_fan = max(max_fan, calculate_fan_out(child))
-    return max_fan
+        heights.append(calculate_height(child))
+    
+    if not heights:
+        return True
+    
+    max_h = max(heights)
+    min_h = min(heights)
+    if max_h - min_h > 1:
+        return False
+    
+    for child in node.children:
+        if not is_balanced(child):
+            return False
+    return True
 
-# 平均分支因子（非叶子节点平均有几个孩子）
-def calculate_branching_factor(node):
-    total_children = 0
-    non_leaf = 0
+ --- 3. Tree Property Verification ---
 
-    def dfs(n):
-        nonlocal total_children, non_leaf
-        if not n:
-            return
-        if n.children:
-            non_leaf += 1
-            total_children += len(n.children)
-        for c in n.children:
-            dfs(c)
+def is_full_generalized_tree(node):
+    if node is None:
+        return True
+    if not node.children:
+        return True
+    if len(node.children) < 2:
+        return False
+    for child in node.children:
+        if not is_full_generalized_tree(child):
+            return False
+    return True
 
-    dfs(node)
-    if non_leaf == 0:
-        return 0.0
-    return total_children / non_leaf
-    # 3. 二叉 → 多叉
-    gen_root = binary_to_generalized(binary_root)
-    print("二叉树转回多叉树成功！")
-    print("转回后前序遍历:", pre_order_generalized(gen_root))
+def is_perfect_generalized_tree(node):
+    if node is None:
+        return True
+
+    height = calculate_height(node)
+    fan_out = len(node.children) if node.children else 0
+
+    def check(node, current_level):
+        if not node.children:
+            return current_level == height
+        if len(node.children) != fan_out:
+            return False
+        for child in node.children:
+            if not check(child, current_level + 1):
+                return False
+        return True
+
+    return check(node, 0)
+
+def is_complete_generalized_tree(node):
+    if node is None:
+        return True
+    from collections import deque
+    q = deque([node])
+    found_null = False
+
+    while q:
+        current = q.popleft()
+        if current is None:
+            found_null = True
+        else:
+            if found_null:
+                return False
+            for child in current.children:
+                q.append(child)
+    return True
+
+ --- 4. Category Search and Navigation ---
+
+def find_category(category_id, node):
+    if node is None:
+        return None
+    if node.category_id == category_id:
+        return node
+    for child in node.children:
+        res = find_category(category_id, child)
+        if res:
+            return res
+    return None
+
+def find_path_to_root(category_id, node):
+    target = find_category(category_id, node)
+    path = []
+    current = target
+    while current is not None:
+        path.append(current.name)
+        current = current.parent
+    return path
+
+def lowest_common_ancestor(id1, id2, node):
+    if node is None:
+        return None
+
+    path1 = find_path_to_root(id1, node)
+    path2 = find_path_to_root(id2, node)
+
+    if not path1 or not path2:
+        return None
+
+    path1.reverse()
+    path2.reverse()
+
+    lca_name = None
+    for a, b in zip(path1, path2):
+        if a == b:
+            lca_name = a
+        else:
+            break
+    return find_category_name(lca_name, node)
+
+def find_category_name(name, node):
+    if node is None:
+        return None
+    if node.name == name:
+        return node
+    for child in node.children:
+        res = find_category_name(name, child)
+        if res:
+            return res
+    return None
+
+ --- 5. Edge Test Suite ---
+
+def run_edge_tests():
+    print("=== Running Edge Cases Test Suite ===")
+
+    # 1. Edge Case: Empty Tree
+    print("\n--- 1. Testing Empty Tree ---")
+    empty_node = None
+    print(f"Height is -1: {calculate_height(empty_node) == -1}")
+    print(f"Node count is 0: {count_nodes(empty_node) == 0}")
+    print(f"Is balanced (True): {is_balanced(empty_node) == True}")
+    print(f"Is complete (True): {is_complete_generalized_tree(empty_node) == True}")
+    print(f"LCA of 1 and 2 is None: {lowest_common_ancestor(1, 2, empty_node) is None}")
+
+    # 2. Edge Case: Single Node Tree
+    print("\n--- 2. Testing Single Node Tree ---")
+    single_node = CategoryNode(1, "Root_Only", 100)
+    print(f"Height is 0: {calculate_height(single_node) == 0}")
+    print(f"Leaf count is 1: {count_leaves(single_node) == 1}")
+    print(f"Is perfect binary tree (True): {is_perfect_generalized_tree(single_node) == True}")
+    print(f"Path to root: {find_path_to_root(1, single_node) == ['Root_Only']}")
+
+    # 3. Edge Case: Completely Unbalanced Tree (Chain)
+    print("\n--- 3. Testing Completely Unbalanced Tree (Left-skewed) ---")
+    n1 = CategoryNode(1, "Level_0", 10)
+    n2 = CategoryNode(2, "Level_1", 20, parent=n1)
+    n1.children.append(n2)
+    n3 = CategoryNode(3, "Level_2", 30, parent=n2)
+    n2.children.append(n3)
+
+    print(f"Height is 2: {calculate_height(n1) == 2}")
+    print(f"Is balanced (False): {is_balanced(n1) == False}")
+    print(f"Is full generalized tree (False): {is_full_generalized_tree(n1) == False}")
+    print(f"Path from leaf to root: {find_path_to_root(3, n1) == ['Level_2', 'Level_1', 'Level_0']}")
+
+    # 4. Edge Case: Non-existent Node Searches
+    print("\n--- 4. Testing Non-existent Nodes ---")
+    print(f"Find category 99 (None): {find_category(99, n1) is None}")
+    print(f"Node height for 99 (-1): {calculate_node_height(n1, 99) == -1}")
+    print(f"Path to root for 99 (Empty List): {find_path_to_root(99, n1) == []}")
+
+    # 5. Edge Case: LCA (Ancestor-Descendant)
+    print("\n--- 5. Testing LCA (Ancestor/Descendant Relationship) ---")
+    lca_node = lowest_common_ancestor(1, 3, n1)
+    print(f"LCA of 1 and 3 is Level_0: {lca_node.name == 'Level_0' if lca_node else False}")
+
+if __name__ == "__main__":
+    run_edge_tests()
