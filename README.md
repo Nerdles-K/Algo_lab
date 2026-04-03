@@ -9,3 +9,6 @@ It involved implementing a binary tree to hierarchically organize content catego
 
 Exercise 2:
 Implements in-order, pre-order, and post-order tree traversals to process category data for exporting, searching, and analytics.
+
+Exercise 3:
+Implements generalized N-ary tree structure, calculates tree properties, validates balance/full/perfect status, and runs thorough edge case tests for hierarchical data.
