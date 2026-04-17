@@ -1,17 +1,25 @@
 import random
+
 def midpoint_displacement(x1, y1, x2, y2, roughness, depth, points=None):
     if points is None:
         points = []
+
     if depth == 0:
         points.append((x1, y1))
         return points
+
     mid_x = (x1 + x2) / 2.0
     mid_y = (y1 + y2) / 2.0
 
     offset = roughness * random.uniform(-1, 1)
     mid_y += offset
+
     midpoint_displacement(x1, y1, mid_x, mid_y, roughness / 2, depth - 1, points)
     midpoint_displacement(mid_x, mid_y, x2, y2, roughness / 2, depth - 1, points)
+
+    if x1 == 0 and y1 == 0:
+        points.append((x2, y2))
+
     return points
 
 def generate_terrain(width, height, roughness, depth):
@@ -22,14 +30,18 @@ def generate_terrain(width, height, roughness, depth):
 def diamond_square(terrain, x1, y1, x2, y2, roughness, depth):
     if depth == 0:
         return
+
     mid_x = (x1 + x2) // 2
     mid_y = (y1 + y2) // 2
+
     c1 = terrain[x1][y1]
     c2 = terrain[x2][y1]
     c3 = terrain[x1][y2]
     c4 = terrain[x2][y2]
     avg = (c1 + c2 + c3 + c4) / 4.0
+
     terrain[mid_x][mid_y] = avg + roughness * random.uniform(-1, 1)
+
     diamond_square(terrain, x1, y1, mid_x, mid_y, roughness / 2, depth - 1)
     diamond_square(terrain, mid_x, y1, x2, mid_y, roughness / 2, depth - 1)
     diamond_square(terrain, x1, mid_y, mid_x, y2, roughness / 2, depth - 1)
@@ -39,13 +51,14 @@ def detect_artifacts(terrain, threshold):
     artifacts = []
     width = len(terrain)
     height = len(terrain[0]) if width > 0 else 0
+
     for i in range(1, width - 1):
         for j in range(1, height - 1):
             current = terrain[i][j]
-            d1 = abs(current - terrain[i - 1][j])
-            d2 = abs(current - terrain[i + 1][j])
-            d3 = abs(current - terrain[i][j - 1])
-            d4 = abs(current - terrain[i][j + 1])
+            d1 = abs(current - terrain[i-1][j])
+            d2 = abs(current - terrain[i+1][j])
+            d3 = abs(current - terrain[i][j-1])
+            d4 = abs(current - terrain[i][j+1])
             max_diff = max(d1, d2, d3, d4)
             if max_diff > threshold:
                 artifacts.append((i, j))
@@ -72,7 +85,6 @@ def run_edge_tests():
     print("Test 4: midpoint displacement line")
     line = midpoint_displacement(0, 0, 100, 0, 5, depth=5)
     print(f"Generated points count: {len(line)}\n")
-
 
 if __name__ == "__main__":
     run_edge_tests()
