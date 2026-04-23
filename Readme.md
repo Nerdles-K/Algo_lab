@@ -5,7 +5,8 @@
 **Brief description of each solution:**
 
 Exercise 1: Implement a Binary Search Tree (BST) to manage user profiles by their user IDs. It also involves creating an algorithm to recommend friends-of-friends and analyzing the tree's overall structure and performance.
+Exercise 1:
 
-Exercise 2:
+Exercise 2: A Max-Heap that maintains a real-time trending posts feed, supporting O(log n) insert and like updates to efficiently retrieve the top-k most popular posts at any time.
 
 Exercise 3:
