@@ -4,8 +4,9 @@
 
 **Brief description of each solution:**
 
-Exercise 1: Implement a Binary Search Tree (BST) to manage user profiles by their user IDs. It also involves creating an algorithm to recommend friends-of-friends and analyzing the tree's overall structure and performance.
+Exercise 1: Solves the "Influencer Coverage" problem by finding the Minimum Dominating Set to identify the smallest group of users capable of reaching an entire social network. It requires implementing and comparing an exact brute-force algorithm for finding the optimal solution on small graphs with a faster greedy approximation approach for larger datasets.
 
-Exercise 2: A Max-Heap that maintains a real-time trending posts feed, supporting O(log n) insert and like updates to efficiently retrieve the top-k most popular posts at any time.
+Exercise 2: 
 
-Exercise 3: Implements Trie for username autocomplete and Segment Tree for activity range queries. Supports core operations, analytics, and edge-case tests. Clean recursive design aligned with Exercise 1 and lab requirements.
+Exercise 3: 
+
