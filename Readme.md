@@ -1,0 +1,11 @@
+**Team Members:** Xu Ziyang, Yuen Kin Ning, Wang Lingyu
+
+**Assigned Exercises:** Xu Ziyang: Ex 1, Yuen Kin Ning: Ex 2, Wang Lingyu: Ex 3
+
+**Brief description of each solution:**
+
+Exercise 1: Implement a Binary Search Tree (BST) to manage user profiles by their user IDs. It also involves creating an algorithm to recommend friends-of-friends and analyzing the tree's overall structure and performance.
+
+Exercise 2: A Max-Heap that maintains a real-time trending posts feed, supporting O(log n) insert and like updates to efficiently retrieve the top-k most popular posts at any time.
+
+Exercise 3: Implements Trie for username autocomplete and Segment Tree for activity range queries. Supports core operations, analytics, and edge-case tests. Clean recursive design aligned with Exercise 1 and lab requirements.
