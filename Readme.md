@@ -6,7 +6,6 @@
 
 Exercise 1: Solves the "Influencer Coverage" problem by finding the Minimum Dominating Set to identify the smallest group of users capable of reaching an entire social network. It requires implementing and comparing an exact brute-force algorithm for finding the optimal solution on small graphs with a faster greedy approximation approach for larger datasets.
 
-Exercise 2: 
+Exercise 2: This exercise requires to find the fewest labels needed to tag users in a social network so that no two friends ever share the same label.
 
-Exercise 3: 
-
+Exercise 3:
