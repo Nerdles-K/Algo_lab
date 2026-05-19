@@ -8,4 +8,4 @@ Exercise 1:
 
 Exercise 2: 
 
-Exercise 3:
+Exercise 3: Implement a balanced partition algorithm to split social network users into two groups while minimizing cross-group friendships and satisfying a 40% minimum size constraint. It also involves designing a greedy heuristic and a local search strategy, and analyzing the graph structure, algorithm behavior, and computational performance.
